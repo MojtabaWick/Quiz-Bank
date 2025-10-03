@@ -13,11 +13,11 @@ namespace ConsoleApp1.Infrastructure.DataAccess.Repositories
         }
         public Card? LogIn(string cardNumber , string password)
         {
-            return _context.Cards.Single(c=>c.CardNumber == cardNumber && c.Password == password) ?? null;
+            return _context.Cards.FirstOrDefault(c=>c.CardNumber == cardNumber && c.Password == password);
         }
         public Card? GetAcount(string cardNumber)
         {
-            return _context.Cards.Single(c=> c.CardNumber == cardNumber) ?? null;
+            return _context.Cards.FirstOrDefault(c=> c.CardNumber == cardNumber);
         }
         public void DecreaseAmount(Card sourceCard , float amount)
         {
