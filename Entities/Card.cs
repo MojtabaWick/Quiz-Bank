@@ -24,6 +24,7 @@ namespace ConsoleApp1.Entities
         public bool IsActive { get; set; }
         [MaxLength(4)]
         public string Password { get; private set; }
+        public int CountWrongPassword {  get; set; } = 0;
         public List<Transaction> TransactionList { get; set; } = [];
 
         void SetPassword(string pass)

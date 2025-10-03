@@ -13,7 +13,39 @@ namespace ConsoleApp1.Infrastructure.DataAccess.Repositories
         }
         public Card? LogIn(string cardNumber , string password)
         {
-            return _context.Cards.FirstOrDefault(c=>c.CardNumber == cardNumber && c.Password == password);
+            var card = _context.Cards.FirstOrDefault(c => c.CardNumber == cardNumber);
+            if (card == null)
+            {
+                return null;
+            }
+            if (card != null)
+            {
+                if (card.Password == password)
+                {
+                    if (card.CountWrongPassword < 3)
+                    {
+                        card.CountWrongPassword = 0;
+                        _context.SaveChanges();
+                        return card;
+                    }
+                    else if (card.CountWrongPassword >= 3)
+                    {
+                        throw new Exception("The Card has been blocked.");
+                    }
+                }
+                else
+                {
+          
+                    card.CountWrongPassword = card.CountWrongPassword + 1;
+                    _context.SaveChanges();
+                    if (card.CountWrongPassword >= 3)
+                    {
+                        throw new Exception("The Card has been blocked.");
+                    }
+                    return null;
+                }
+            }
+            return null;
         }
         public Card? GetAcount(string cardNumber)
         {
